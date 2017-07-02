@@ -1,11 +1,11 @@
 paths:
     migrations: %%PHINX_CONFIG_DIR%%/migrations
-    seeds: %%PHINX_CONFIG_DIR%%/db/seeds
+    seeds: %%PHINX_CONFIG_DIR%%/seeds
 
 environments:
     default_migration_table: phinxlog
-    default_database: production
-    production:
+    default_database: store
+    store:
         adapter: mysql
         host: localhost
         name: store
