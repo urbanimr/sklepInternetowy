@@ -1,4 +1,4 @@
 /nbproject/
 /vendor/
 /config/dataConnection.php
-
+phinx.yml
