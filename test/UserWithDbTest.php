@@ -165,6 +165,24 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertEquals($newValues['name'], $newJohn->getName());
     }
     
+    public function testSavingUserWithTheSameEmailNotPossible()
+    {
+        $emailOfJohnDoe = 'john@doe.com';
+        $newUser = new User();
+        $newUser->exchangeArray([
+            'name' => 'Jakub Stonoga',
+            'email' => $emailOfJohnDoe,
+            'password_plaintext' => 'correctPASSWORD123',
+            'date_created' => '2017-07-01 12:20:15'
+        ]);
+        $rowCountBeforeInsert = $this->getConnection()->getRowCount('users');
+        $result = $newUser->save($this->connection);
+        $this->assertFalse($result);
+        $this->assertEquals(-1, $newUser->getId());
+        $rowCountAfterInsert = $this->getConnection()->getRowCount('users');
+        $this->assertEquals($rowCountBeforeInsert, $rowCountAfterInsert);   
+    }
+    
     public function testUseCase()
     {
         //only to show how to use User

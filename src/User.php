@@ -92,7 +92,7 @@ class User
         return $this->update($conn); 
     }
     
-    protected function insert(PDO $conn)
+    private function insert(PDO $conn)
     {
         $reverseExchangeArray = $this->getReverseExchangeArray();
         
@@ -119,7 +119,7 @@ class User
         return true;
     }
 
-    protected function update(PDO $conn)
+    private function update(PDO $conn)
     {
         $reverseExchangeArray = $this->getReverseExchangeArray();
         $columnNamesArray = array_keys($reverseExchangeArray);        
@@ -235,6 +235,14 @@ class User
         return $validator->validate();
     }
     
+    public function authenticate($email, $plainTextPassword)
+    {        
+        $emailCorrect = $email == $this->email;
+        $passwordCorrect = password_verify($plainTextPassword, $this->hashPass);
+
+        return $emailCorrect && $passwordCorrect;
+    }
+    
     public function setId($id)
     {
         $this->id = $id;
@@ -264,14 +272,6 @@ class User
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
-    }
-    
-    public function authenticate($email, $plainTextPassword)
-    {        
-        $emailCorrect = $email == $this->email;
-        $passwordCorrect = password_verify($plainTextPassword, $this->hashPass);
-
-        return $emailCorrect && $passwordCorrect;
     }
     
     public function getId()

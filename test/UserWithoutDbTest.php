@@ -34,7 +34,7 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'id' => '2',
             'name' => 'Jan Kowalski',
             'email' => 'jan@kowalski.pl',
-            'dateCreated' => '1499031091',
+            'dateCreated' => '2017-06-15 08:30:45',
         ];
         $user = new User();
         $user->setId($newValues['id']);
@@ -89,7 +89,7 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'name' => 'Jan Kowalski',
             'email' => 'jan@kowalski.pl',
             'password_plaintext' => 'correctPASSWORD123',
-            'date_created' => '1499031091',
+            'date_created' => '2017-06-15 08:30:45',
         ];
         $user1 = new User();
         $user1->exchangeArray($data1);
@@ -105,7 +105,7 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'email' => 'jan@kowalski.pl',
             'password' => '$2y$11$KEf2QAk/Mpw2nR8OUKc0N.pZlC/d.zoZoX.lCqKph/Gy9Ejz6aUKu',
             'password_plaintext' => 'correctPASSWORD123',
-            'date_created' => '1499031091',
+            'date_created' => '2017-06-15 08:30:45',
         ];
         $user2 = new User();
         $user2->exchangeArray($data2);
@@ -119,7 +119,7 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'name' => 'Jan Kowalski',
             'email' => 'jan@kowalski.pl',
             'password' => 'abcABC123',
-            'dateCreated' => '1499031091'
+            'dateCreated' => '2017-06-15 08:30:45'
         ];
         $requiredFields = array_keys($data);
         
