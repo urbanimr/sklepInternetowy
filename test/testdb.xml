@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<dataset>
+    <table name="users">
+        <column>id</column>
+        <column>name</column>
+        <column>email</column>
+        <column>password</column>
+        <column>date_created</column>
+        <row>
+            <value>1</value>
+            <value>John Doe</value>
+            <value>john@doe.com</value>
+            <value>$2y$11$KEf2QAk/Mpw2nR8OUKc0N.pZlC/d.zoZoX.lCqKph/Gy9Ejz6aUKu</value>
+            <value>2017-07-01 12:20:15</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>Jane Doe</value>
+            <value>jane@doe.com</value>
+            <value>$2y$11$KEf2QAk/Mpw2nR8OUKc0N.pZlC/d.zoZoX.lCqKph/Gy9Ejz6aUKu</value>
+            <value>2017-06-15 08:30:45</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>Jan Kowalski</value>
+            <value>jan@kowalski.pl</value>
+            <value>$2y$11$KEf2QAk/Mpw2nR8OUKc0N.pZlC/d.zoZoX.lCqKph/Gy9Ejz6aUKu</value>
+            <value>2017-08-14 11:30:18</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>Ania Nowak</value>
+            <value>ania@nowak.pl</value>
+            <value>$2y$11$KEf2QAk/Mpw2nR8OUKc0N.pZlC/d.zoZoX.lCqKph/Gy9Ejz6aUKu</value>
+            <value>2017-08-09 07:30:18</value>
+        </row>
+    </table>
+</dataset>
