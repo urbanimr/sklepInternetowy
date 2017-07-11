@@ -76,7 +76,7 @@ class User
         $this->setName(isset($data['name']) ? $data['name'] : $this->name);
         $this->setEmail(isset($data['email']) ? $data['email'] : $this->email);
         $this->setDateCreated(isset($data['date_created']) ? $data['date_created'] : $this->dateCreated);
-        if (isset($data['password'])) {
+        if (isset($data['pass word'])) {
             $this->setHashPass($data['password']);
         } else if (isset($data['password_plaintext'])) {
             $this->setPassword($data['password_plaintext']);

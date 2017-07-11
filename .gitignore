@@ -2,3 +2,4 @@
 /vendor/
 /config/dataConnection.php
 phinx.yml
+/public/img/
