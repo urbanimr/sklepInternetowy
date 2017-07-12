@@ -17,9 +17,9 @@ class Product
 
 
 
-    public function __construct($id = null, $name = '',$price = 0, $quantity = 0, $description = '')
+    public function __construct($id = -1, $name = '',$price = 0, $quantity = 0, $description = '')
     {
-        //$this->id = -1;
+        $this->id = -1;
         $this->setName($name);
         $this->setPrice($price);
         $this->setDescription($description);
@@ -47,34 +47,42 @@ class Product
     }
 
 
-    public function uploadProductToDataBase(PDO $conn, $name,$price = 0,$quantity = 0, $description =''){
-        $this->setName($name);
-        $this->setPrice($price);
-        $this->setQuantity($quantity);
-        $this->setDescription($description);
-
+    public function uploadProductToDataBase(PDO $conn){
         $sql = 'INSERT INTO products(name, price, description, quantity) VALUES (:name,:price,:description,:quantity)';
 
         try{
             $stmt = $conn->prepare($sql);
-            $stmt->execute(['name'=>$name,'price'=>$price, 'description' =>$description, 'quantity' =>$quantity]);
+            $stmt->execute(['name'=>$this->name,'price'=>$this->price, 'description' =>$this->description, 'quantity' =>$this->quantity]);
         } catch (PDOException $exception){
             echo $exception->getMessage();
         }
-
+        
+        $this->setId($conn->lastInsertId());
     }
 
     static public function showProductById(PDO $conn, $id){
-        $sql = 'SELECT * FROM products WHERE id=:id';
+        $sql = 'SELECT * FROM products WHERE id=:id LIMIT 1';
+        $stmt = $conn->prepare($sql);
 
         try{
-            $stmt = $conn->prepare($sql);
             $result = $stmt->execute(['id'=>$id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
         }catch (PDOException $exception){
             echo $exception->getMessage();
+            return null;
         }
 
+        if ($result != true || $stmt->rowCount() < 1 ) {
+            return null;
+        }
+        
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $loadedProduct = new Product();
+        $loadedProduct->setId($id);
+        $loadedProduct->setName($row['name']);
+        $loadedProduct->setPrice($row['price']);
+        $loadedProduct->setDescription($row['description']);
+        $loadedProduct->setQuantity($row['quantity']);
+        return $loadedProduct;
     }
 
     static public function showAllProductsName(PDO $conn){
@@ -93,7 +101,14 @@ class Product
 
     }
 
-
+    /**
+     * @return mixed
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+    
     /**
      * @return mixed
      */
