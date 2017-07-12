@@ -34,7 +34,7 @@ class CreatePhotosTable extends AbstractMigration
                               product_id int NOT NULL, 
                               picture_name VARCHAR(80) NOT NULL ,
                               path VARCHAR(80) NOT NULL , 
-                              picture_description TEXT, 
+                              picture_description VARCHAR(80), 
                               PRIMARY KEY (id), 
                               FOREIGN KEY (product_id) REFERENCES products(id))');
     }
