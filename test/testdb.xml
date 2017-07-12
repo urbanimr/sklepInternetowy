@@ -35,4 +35,32 @@
             <value>2017-08-09 07:30:18</value>
         </row>
     </table>
+    <table name="products">
+        <column>id</column>
+        <column>name</column>
+        <column>price</column>
+        <column>description</column>
+        <column>quantity</column>
+        <row>
+            <value>1</value>
+            <value>Mydło</value>
+            <value>2.40</value>
+            <value>Znakomity środek czystości dla kobiet i mężczyzn</value>
+            <value>2</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>Szydło</value>
+            <value>0.80</value>
+            <value>Duża igła</value>
+            <value>5</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>Powidło</value>
+            <value>12.00</value>
+            <value>Przetworzone śliwki, na kanapkę albo jako nadzienie.</value>
+            <value>40</value>
+        </row>
+    </table>
 </dataset>
