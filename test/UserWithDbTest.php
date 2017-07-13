@@ -43,6 +43,8 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertEquals('john@doe.com', $john->getEmail());
         $this->assertTrue($john->authenticate('john@doe.com', 'doe'));
         $this->assertEquals('2017-07-01 12:20:15', $john->getDateCreated());
+        $this->assertEquals(1, $john->getBillingAddressId());
+        $this->assertEquals(2, $john->getShippingAddressId());
     }
     
     public function testLoadManyUsersLoadsUserObjects()
@@ -57,7 +59,7 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
     {
         $users = User::loadManyUsers($this->connection);
         $dateValues = [];
-        foreach($users as $user) {
+        foreach ($users as $user) {
             $dateValues[] = strtotime($user->getDateCreated());
         }
         $dateValuesInExpectedOrder = $dateValues;
@@ -132,7 +134,9 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
             'name' => 'Jakub Stonoga',
             'email' => 'jakub@stonoga.pl',
             'password_plaintext' => 'correctPASSWORD123',
-            'date_created' => '2017-07-01 12:20:15'
+            'date_created' => '2017-07-01 12:20:15',
+            'billing_address' => 1,
+            'shipping_address' => 1
         ]);
         $rowCountBeforeInsert = $this->getConnection()->getRowCount('users');
         $result = $newUser->save($this->connection);
@@ -140,7 +144,7 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
         $this->assertNotEquals(-1, $newUser->getId());
         $rowCountAfterInsert = $this->getConnection()->getRowCount('users');
         $rowCountDifference = $rowCountAfterInsert - $rowCountBeforeInsert;
-        $this->assertEquals(1, $rowCountDifference);    
+        $this->assertEquals(1, $rowCountDifference);
     }
     
     public function testSaveWithPersistedUseOnlyUpdatesRowAndReturnsTrue()
@@ -152,7 +156,9 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
             'name' => 'Jakub Stonoga',
             'email' => 'jakub@stonoga.pl',
             'password_plaintext' => 'correctPASSWORD123',
-            'date_created' => '2017-07-01 12:20:15'
+            'date_created' => '2017-07-01 12:20:15',
+            'billing_address' => 1,
+            'shipping_address' => 1
         ];
         $john->exchangeArray($newValues);
         $result = $john->save($this->connection);
@@ -173,14 +179,35 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
             'name' => 'Jakub Stonoga',
             'email' => $emailOfJohnDoe,
             'password_plaintext' => 'correctPASSWORD123',
-            'date_created' => '2017-07-01 12:20:15'
+            'date_created' => '2017-07-01 12:20:15',
+            'billing_address' => 1,
+            'shipping_address' => 1
         ]);
         $rowCountBeforeInsert = $this->getConnection()->getRowCount('users');
         $result = $newUser->save($this->connection);
         $this->assertFalse($result);
         $this->assertEquals(-1, $newUser->getId());
         $rowCountAfterInsert = $this->getConnection()->getRowCount('users');
-        $this->assertEquals($rowCountBeforeInsert, $rowCountAfterInsert);   
+        $this->assertEquals($rowCountBeforeInsert, $rowCountAfterInsert);
+    }
+    
+    public function testSavingUserFailsWithNonexistentAddressId()
+    {
+        $newUser = new User();
+        $newUser->exchangeArray([
+            'name' => 'Jakub Stonoga',
+            'email' => 'jakub@stonoga.pl',
+            'password_plaintext' => 'correctPASSWORD123',
+            'date_created' => '2017-07-01 12:20:15',
+            'billing_address' => 434,
+            'shipping_address' => 546
+        ]);
+        $rowCountBeforeInsert = $this->getConnection()->getRowCount('users');
+        $result = $newUser->save($this->connection);
+        $this->assertFalse($result);
+        $this->assertEquals(-1, $newUser->getId());
+        $rowCountAfterInsert = $this->getConnection()->getRowCount('users');
+        $this->assertEquals($rowCountBeforeInsert, $rowCountAfterInsert);
     }
     
     public function testUseCase()
@@ -192,6 +219,10 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
             'email' => 'beata@marczak.pl',
             'password_plaintext' => 'correctPASSWORD123',
             'name' => 'Beata Marczak'
+        ];
+        $dataFromDbAfterInsertingNewAddresses = [
+            'billing_address' => 1,
+            'shipping_address' => 2
         ];
         $dataIsValid = User::validate(
             $this->createMock(InputValidator::class),
@@ -205,13 +236,15 @@ class UserWithDbTest extends PHPUnit_Extensions_Database_TestCase
         
         $newUser = new User();
         $newUser->exchangeArray($dataFromRegistrationForm);
+        $newUser->exchangeArray($dataFromDbAfterInsertingNewAddresses);
         $newUser->setDateCreated(date('Y-m-d H:i:s'));
         $newUser->save($this->connection);
+        $newUser = null;
         
         //login
         $dataFromLoginForm = [
             'email' => 'beata@marczak.pl',
-            'password_plaintext' => 'correctPASSWORD123'           
+            'password_plaintext' => 'correctPASSWORD123'
         ];
         $dataIsValid = User::validate(
             $this->createMock(InputValidator::class),
