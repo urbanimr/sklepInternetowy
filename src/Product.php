@@ -101,6 +101,32 @@ class Product
 
     }
 
+
+    public function modify(PDO $conn){
+        $sql = 'UPDATE products SET name=:name, price=:price, description=:description,quantity=:quantity WHERE id=:id';
+
+        try{
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['name'=> $this->name, 'price'=>$this->price,'description'=>$this->description, 'quantity'=>$this->quantity, 'id' =>$this->id]);
+
+        }catch (PDOException $exception){
+            echo $exception->getMessage();
+        }
+    }
+
+
+    public function delete(PDO $conn){
+        $sql ='DELETE FROM products WHERE id=:id';
+
+        try{
+            $stmt = $conn->prepare($sql);
+            $stmt->execute(['id'=> $this->id ]);
+
+        }catch (PDOException $exception){
+            echo $exception->getMessage();
+        }
+    }
+
     /**
      * @return mixed
      */
@@ -195,6 +221,4 @@ class Product
     
 
 }
-
-
 

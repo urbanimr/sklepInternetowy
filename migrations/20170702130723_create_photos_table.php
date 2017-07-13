@@ -25,6 +25,24 @@ class CreatePhotosTable extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
+    private $tableName = 'photos';
+
+    public function up()
+    {
+        $this->execute('CREATE TABLE' . $this->tableName .'(
+                              id INT AUTO_INCREMENT, 
+                              product_id int NOT NULL, 
+                              picture_name VARCHAR(80) NOT NULL ,
+                              path VARCHAR(80) NOT NULL , 
+                              picture_description VARCHAR(80), 
+                              PRIMARY KEY (id), 
+                              FOREIGN KEY (product_id) REFERENCES products(id))');
+    }
+    
+    public function down() {
+        $this->execute('DROP TABLE' . $this->tableName);
+    }
+
     public function change()
     {
 
