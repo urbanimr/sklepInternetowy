@@ -242,8 +242,8 @@ class User
         if (isset($data['dateCreated'])) {
             $validator->addValidations([
                 'dateCreated' => [
-                    ['isInt'],
-                    ['greaterThan',0]
+                    ['notEmpty'],
+                    ['sqlDatePattern']
                 ]
             ]);
         }

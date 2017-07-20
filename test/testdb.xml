@@ -151,4 +151,148 @@
             <value>40</value>
         </row>
     </table>
+    <table name="orders">
+        <column>id</column>
+        <column>user_id</column>
+        <column>billing_address</column>
+        <column>shipping_address</column>
+        <column>carrier_id</column>
+        <column>payment_id</column>
+        <column>comment</column>
+        <column>shipping_cost</column>
+        <column>total_amount</column>
+        <row>
+            <value>1</value>
+            <value>1</value>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>2</value>
+            <value>Towary potrzebne na wczoraj</value>
+            <value>20.00</value>
+            <value>46.95</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>1</value>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>2</value>
+            <value>Towary potrzebne na wczoraj</value>
+            <value>20.00</value>
+            <value>31.40</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>1</value>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>2</value>
+            <value>Proszę o przesłanie pustej paczki</value>
+            <value>20.00</value>
+            <value>20.00</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>2</value>
+            <value>1</value>
+            <value>2</value>
+            <value>3</value>
+            <value>2</value>
+            <value>Proszę o przesłanie pustej paczki</value>
+            <value>20.00</value>
+            <value>20.00</value>
+        </row>
+    </table>
+    <table name="order_products">
+        <column>id</column>
+        <column>order_id</column>
+        <column>product_id</column>
+        <column>quantity</column>
+        <column>price</column>
+        <row>
+            <value>1</value>
+            <value>1</value>
+            <value>3</value>
+            <value>2</value>
+            <value>11.40</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>1</value>
+            <value>2</value>
+            <value>5</value>
+            <value>0.75</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>1</value>
+            <value>1</value>
+            <value>1</value>
+            <value>2.40</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>2</value>
+            <value>3</value>
+            <value>1</value>
+            <value>11.40</value>
+        </row>
+    </table>
+    <table name="order_statuses">
+        <column>id</column>
+        <column>order_id</column>
+        <column>status_id</column>
+        <column>date</column>
+        <row>
+            <value>1</value>
+            <value>1</value>
+            <value>1</value>
+            <value>2017-07-14 08:00:00</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>1</value>
+            <value>2</value>
+            <value>2017-07-14 12:30:00</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>1</value>
+            <value>4</value>
+            <value>2017-07-14 15:30:20</value>
+        </row>
+        <row>
+            <value>4</value>
+            <value>2</value>
+            <value>1</value>
+            <value>2017-07-18 15:30:20</value>
+        </row>
+        <row>
+            <value>5</value>
+            <value>3</value>
+            <value>1</value>
+            <value>2017-07-18 15:30:20</value>
+        </row>
+        <row>
+            <value>6</value>
+            <value>3</value>
+            <value>2</value>
+            <value>2017-07-19 15:30:20</value>
+        </row>
+        <row>
+            <value>7</value>
+            <value>4</value>
+            <value>1</value>
+            <value>2017-07-19 15:30:20</value>
+        </row>
+        <row>
+            <value>8</value>
+            <value>4</value>
+            <value>2</value>
+            <value>2017-07-20 15:30:20</value>
+        </row>
+    </table>
 </dataset>
