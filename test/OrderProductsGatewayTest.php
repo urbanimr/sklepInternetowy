@@ -4,6 +4,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/OrderProduct.php';
 require_once __DIR__ . '/../src/OrderProductsGateway.php';
 require_once __DIR__ . '/../src/InputValidator.php';
+require_once __DIR__ . '/../src/Product.php';
 
 class OrderProductsGatewayTest extends PHPUnit_Extensions_Database_TestCase
 {
@@ -56,6 +57,18 @@ class OrderProductsGatewayTest extends PHPUnit_Extensions_Database_TestCase
         $idsInExpectedOrder = $ids;
         sort($idsInExpectedOrder);
         $this->assertSame($idsInExpectedOrder, $ids);
+    }
+    
+    public function testLoadedProductsContainReferencedCatalogProducts()
+    {
+        $orderProducts = $this->gateway->loadProductsByOrderId(1);
+        foreach ($orderProducts as $orderProduct) {
+            $this->assertInstanceOf(Product::class, $orderProduct->getCatalogProduct());
+            $this->assertEquals(
+                $orderProduct->getProductId(),
+                $orderProduct->getCatalogProduct()->getId()
+            );
+        }
     }
     
     public function testSaveWithNonPersistedProductInsertsRowChangesIdReturnsTrue()

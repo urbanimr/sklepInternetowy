@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/TableRow.php';
 
-class OrderStatus implements TableRow
+class OrderStatus implements TableRow, JsonSerializable
 {
     const STATUS_BASKET = 1;
     const STATUS_SUBMITTED = 2;
@@ -39,6 +39,13 @@ class OrderStatus implements TableRow
         $status = new OrderStatus();
         $status->importArray($values);
         return $status;
+    }
+    
+    public function jsonSerialize()
+    {
+        $array = $this->exportArray();
+        $array['id'] = $this->getId();
+        return $array;
     }
     
     public function importArray(array $data)

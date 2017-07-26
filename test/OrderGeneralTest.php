@@ -4,10 +4,12 @@ require_once __DIR__ . '/../src/Order.php';
 require_once __DIR__ . '/../src/Carrier.php';
 require_once __DIR__ . '/../src/CarriersGateway.php';
 require_once __DIR__ . '/../src/InputValidator.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 
 class OrderGeneralTest extends PHPUnit_Framework_TestCase
 {
     private $carriersGateway;
+    private $catalogProductsGateway;
     private $connection;
     
     protected function getConnection()
@@ -35,11 +37,12 @@ class OrderGeneralTest extends PHPUnit_Framework_TestCase
             'coderslab'
         );
         $this->carriersGateway = new CarriersGateway($this->connection);
+        $this->catalogProductsGateway = new CatalogProductsGateway($this->connection);
     }
     
     public function testConstructSetsDefaultEmptyValues()
     {
-        $basket = new Order($this->carriersGateway);
+        $basket = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $this->assertEquals(-1, $basket->getId());
         $this->assertEquals(-1, $basket->getUserId());
         $this->assertEquals(-1, $basket->getBillingAddress());
@@ -68,7 +71,7 @@ class OrderGeneralTest extends PHPUnit_Framework_TestCase
             'shipping_cost' => 14.00,
             'total_amount' => 65.65
         ];
-        $basket = new Order($this->carriersGateway);
+        $basket = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $basket->setId($newValues['id']);
         $basket->setUserId($newValues['user_id']);
         $basket->setBillingAddress($newValues['billing_address']);
@@ -103,7 +106,7 @@ class OrderGeneralTest extends PHPUnit_Framework_TestCase
             'shipping_cost' => 15.00,
             'total_amount' => 65.65
         ];
-        $basket = new Order($this->carriersGateway);
+        $basket = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $basket->importArray($newValues);
         $this->assertEquals($newValues['id'], $basket->getId());
         $this->assertEquals($newValues['user_id'], $basket->getUserId());
@@ -156,7 +159,7 @@ class OrderGeneralTest extends PHPUnit_Framework_TestCase
     
     public function testChangingCarrierRecalculatesShippingCost()
     {
-        $basket = new Order($this->carriersGateway);
+        $basket = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $status = new OrderStatus();
         $status->setStatusId(OrderStatus::STATUS_BASKET);
         $basket->addStatus($status);

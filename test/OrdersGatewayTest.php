@@ -5,6 +5,7 @@ require_once __DIR__ . '/../src/Order.php';
 require_once __DIR__ . '/../src/OrdersGateway.php';
 require_once __DIR__ . '/../src/CarriersGateway.php';
 require_once __DIR__ . '/../src/OrderProductsGateway.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 require_once __DIR__ . '/../src/OrderStatusesGateway.php';
 require_once __DIR__ . '/../src/InputValidator.php';
 require_once __DIR__ . '/../src/Carrier.php';
@@ -16,6 +17,7 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
     private $connection;
     private $gateway;
     private $carriersGateway;
+    private $catalogProductsGateway;
     private $orderOneVals;
     private $orderOneProducts;
     
@@ -45,12 +47,14 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
         );
         
         $this->carriersGateway = new CarriersGateway($this->connection);
+        $this->catalogProductsGateway = new CatalogProductsGateway($this->connection);
         
         $this->gateway = new OrdersGateway(
             $this->connection,
             $this->carriersGateway,
             new OrderStatusesGateway($this->connection),
-            new OrderProductsGateway($this->connection)
+            new OrderProductsGateway($this->connection),
+            $this->catalogProductsGateway
         );
 
         $this->orderOneVals = [
@@ -133,13 +137,13 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
     
     public function testLoadOrderWithBasketStatusLoadsCurrentPricesAndShippingCost()
     {        
-        // order 2
+        // order 3
         //- basket
         //- carrier 3, shippingCost: 20.00 (now should be: 18.50)
         //- 1 x product 3, sum of products: 11.40 (now should be 12.00)
         //- total amount: 31,40 (now should be 30.50)
         
-        $orderId = 2;        
+        $orderId = 3;        
         $order = $this->gateway->loadOrderByColumn('id', $orderId);
         
         //make sure order2 last status is basket
@@ -193,7 +197,7 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
    
     public function testSaveWithNonPersistedOrderInsertsRowChangesIdReturnsTrue()
     {
-        $newOrder = new Order($this->carriersGateway);
+        $newOrder = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $values = [
             'user_id' => 2,
             'billing_address' => 2,
@@ -249,7 +253,7 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
     
     public function testSaveUpdatesOrderIdPropertyOfStatusesAndCallsSaveOnEveryStatus()
     {
-        $newOrder = new Order($this->carriersGateway);
+        $newOrder = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $orderValues = [
             'user_id' => 2,
             'billing_address' => 2,
@@ -286,7 +290,7 @@ class OrdersGatewayTest extends PHPUnit_Extensions_Database_TestCase
     
     public function testSaveUpdatesOrderIdPropertyOfProductsAndCallsSaveOnEveryProduct()
     {
-        $newOrder = new Order($this->carriersGateway);
+        $newOrder = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $orderValues = [
             'user_id' => 2,
             'billing_address' => 2,

@@ -1,22 +1,26 @@
 <?php
 require_once __DIR__ . '/../src/TableGateway.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 
 class OrdersGateway extends TableGateway
 {
     private $carriersGateway;
     private $orderStatusesGateway;
     private $orderProductsGateway;
+    private $catalogProductsGateway;
     
     public function __construct(
         PDO $conn,
         CarriersGateway $carriersGateway,
         OrderStatusesGateway $orderStatusesGateway,
-        OrderProductsGateway $orderProductsGateway
+        OrderProductsGateway $orderProductsGateway,
+        CatalogProductsGateway $catalogProductsGateway
     ) {
         $table = 'orders';
         $this->carriersGateway = $carriersGateway;
         $this->orderProductsGateway = $orderProductsGateway;
         $this->orderStatusesGateway = $orderStatusesGateway;
+        $this->catalogProductsGateway = $catalogProductsGateway;
         parent::__construct($conn, $table);
     }
     
@@ -123,7 +127,7 @@ class OrdersGateway extends TableGateway
 
     protected function createItemFromRow($row)
     {
-        $order = new Order($this->carriersGateway);
+        $order = new Order($this->carriersGateway, $this->catalogProductsGateway);
         $order->importArray($row);
         $this->loadStatusesFor($order);
         $this->loadProductsFor($order);

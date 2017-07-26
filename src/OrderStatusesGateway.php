@@ -38,47 +38,80 @@ class OrderStatusesGateway extends TableGateway
         );
     }
     
+//    public function loadBasketStatusByUserId(int $userId)
+//    {
+//        $joinedTables = [
+//            'statuses' => [
+//                'joinColumns' => ['status_id', 'id'],
+//                'selectedColumns' => ['status_name']
+//            ],
+//            'orders' => [
+//                'joinColumns' => ['order_id', 'id'],
+//                'selectedColumns' => ['user_id']
+//            ]
+//        ];
+//        
+//        $args = [
+//            'whereColumn' => 'user_id',
+//            'whereValue' => $userId,
+//            'joinedTables' => $joinedTables,
+//            'limit' => 100,
+//            'offset' => 0,
+//            'orderBy' => 'status_id',
+//            'isOrderAsc' => true
+//        ];
+//        $allStatuses = $this->loadItemsByColumn(
+//            $args['whereColumn'],
+//            $args['whereValue'],
+//            $args['joinedTables'],
+//            $args['limit'],
+//            $args['offset'],
+//            $args['orderBy'],
+//            $args['isOrderAsc']
+//        );
+//        
+//        if (empty($allStatuses)) {
+//            return false;
+//        }
+//        
+//        if ($allStatuses[0]->getStatusId() != OrderStatus::STATUS_BASKET) {
+//            return false;
+//        }
+//        
+//        return $allStatuses[0];
+//    }
+    
     public function loadBasketStatusByUserId(int $userId)
     {
-        $joinedTables = [
-            'statuses' => [
-                'joinColumns' => ['status_id', 'id'],
-                'selectedColumns' => ['status_name']
-            ],
-            'orders' => [
-                'joinColumns' => ['order_id', 'id'],
-                'selectedColumns' => ['user_id']
-            ]
-        ];
+        $completeQuery = 'SELECT order_statuses.*, statuses.status_name FROM order_statuses'
+            . ' '
+            . 'LEFT JOIN statuses ON order_statuses.status_id = statuses.id'
+            . ' '
+            . 'LEFT JOIN orders ON order_statuses.order_id = orders.id'
+            . ' '
+            . "WHERE orders.user_id = $userId"
+            . ' '
+            . 'ORDER BY order_statuses.order_id DESC'
+            . ', '
+            . 'order_statuses.date DESC'
+            . ' '
+            . 'LIMIT 1';
+
+        $stmt = $this->conn->prepare($completeQuery);
+        $result = $stmt->execute();
         
-        $args = [
-            'whereColumn' => 'user_id',
-            'whereValue' => $userId,
-            'joinedTables' => $joinedTables,
-            'limit' => 100,
-            'offset' => 0,
-            'orderBy' => 'status_id',
-            'isOrderAsc' => true
-        ];
-        $allStatuses = $this->loadItemsByColumn(
-            $args['whereColumn'],
-            $args['whereValue'],
-            $args['joinedTables'],
-            $args['limit'],
-            $args['offset'],
-            $args['orderBy'],
-            $args['isOrderAsc']
-        );
-        
-        if (empty($allStatuses)) {
-            return false;
+        if ($result != true || $stmt->rowCount() != 1) {
+            return null;
         }
         
-        if ($allStatuses[0]->getStatusId() != OrderStatus::STATUS_BASKET) {
-            return false;
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $lastStatusIsNotBasket = $row['status_id'] != OrderStatus::STATUS_BASKET;
+        if ($lastStatusIsNotBasket) {
+            return null;
         }
         
-        return $allStatuses[0];
+        $loadedItem = $this->createItemFromRow($row);
+        return $loadedItem;  
     }
     
     protected function createItemFromRow($row)

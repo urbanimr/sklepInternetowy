@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online store</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/store.css?ver=11">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
+    <script src="js/StoreModule.js?ver=44"></script>
+    <script src="js/UserService.js?ver=43"></script>
+    <script src="js/CartService.js?ver=49"></script>
+    <script src="js/RootController.js?ver=48"></script>
+    <script src="js/TopCartController.js?ver=48"></script>
+    <script src="js/CategoriesController.js?ver=43"></script>
+    <script src="js/ProductController.js?ver=43"></script>
+    <script src="js/HomeController.js?ver=44"></script>
+    <script src="js/NavController.js?ver=43"></script>
+    <script src="js/SignInController.js?ver=43"></script>
+    <script src="js/SignOutController.js?ver=43"></script>
+    <script src="js/CheckAuthController.js?ver=43"></script>
+    <script src="js/ProfileController.js?ver=43"></script>
+    <script src="js/CategoryController.js?ver=43"></script>
+    <script src="js/CartPageController.js?ver=43"></script>
+</head>
+<body>
+<div class="container-fluid" ng-app="StoreModule" ng-controller="RootController">
+    <div class="row">
+        <div class="col-xs-6" ng-controller="NavController" ng-include="'templates/nav.html?ver=3'"></div>
+        <div class="col-xs-3">
+            <img class="logo" src="../img/logo.jpg">
+        </div>
+        <div class="col-xs-3 cart" ng-controller="TopCartController" ng-show="user.isLogged" ng-include="'templates/topcart.html?ver=45'"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3" ng-controller="CategoriesController" ng-include="'templates/categories.html?ver=40'"></div>
+        <div class="col-sm-9" ng-view></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/TableGateway.php';
 require_once __DIR__ . '/../src/OrderProduct.php';
+require_once __DIR__ . '/../src/Product.php';
 
 class OrderProductsGateway extends TableGateway
 {
@@ -37,6 +38,12 @@ class OrderProductsGateway extends TableGateway
     {
         $newItem = new OrderProduct();
         $newItem->importArray($row);
+        
+        $catalogProduct = Product::showProductById($this->conn, $newItem->getProductId());
+        if ($catalogProduct instanceof Product) {
+            $newItem->setCatalogProduct($catalogProduct);
+        }
+        
         return $newItem;
     }
     

@@ -1,18 +1,20 @@
 <?php
 require_once __DIR__ . '/../src/TableRow.php';
+require_once __DIR__ . '/../src/Product.php';
 
 /**
  * represents one item from the list of products of a specific basket/order
  * links orders to products
  * keeps product price from the moment of submitting the order
  */
-class OrderProduct implements TableRow
+class OrderProduct implements TableRow, JsonSerializable
 {
     private $id;
     private $orderId;
     private $productId;
     private $quantity;
     private $price;
+    private $catalogProduct;
     
     public function __construct()
     {
@@ -21,6 +23,15 @@ class OrderProduct implements TableRow
         $this->productId = -1;
         $this->quantity = 0;
         $this->price = 0.00;
+        $this->catalogProduct = null;
+    }
+    
+    public function jsonSerialize()
+    {
+        $array = $this->exportArray();
+        $array['id'] = $this->getId();
+        $array['catalogProduct'] = $this->getCatalogProduct();
+        return $array;
     }
     
     public function importArray(array $data)
@@ -159,6 +170,11 @@ class OrderProduct implements TableRow
     {
         $this->price = $price;
     }
+    
+    public function setCatalogProduct(Product $catalogProduct)
+    {
+        $this->catalogProduct = $catalogProduct;
+    }
 
     public function getId()
     {
@@ -183,5 +199,10 @@ class OrderProduct implements TableRow
     public function getPrice()
     {
         return $this->price;
+    }
+    
+    public function getCatalogProduct()
+    {
+        return $this->catalogProduct;
     }
 }

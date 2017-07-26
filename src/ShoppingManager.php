@@ -2,21 +2,25 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../src/Order.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 
 class ShoppingManager
 {
     private $ordersGateway;
     private $carriersGateway;
     private $orderStatusesGateway;
+    private $catalogProductsGateway;
     
     public function __construct(
         OrdersGateway $ordersGateway,
         CarriersGateway $carriersGateway,
-        OrderStatusesGateway $orderStatusesGateway
+        OrderStatusesGateway $orderStatusesGateway,
+        CatalogProductsGateway $catalogProductsGateway
     ) {
         $this->ordersGateway = $ordersGateway;
         $this->carriersGateway = $carriersGateway;
         $this->orderStatusesGateway = $orderStatusesGateway;
+        $this->catalogProductsGateway = $catalogProductsGateway;
     }
     
     public function loadOrCreateBasketByUser(User $user)
@@ -45,7 +49,7 @@ class ShoppingManager
     
     private function createNewBasket(User $user)
     {
-        $basket = new Order($this->carriersGateway);
+        $basket = new Order($this->carriersGateway, $this->catalogProductsGateway);
         
         $userInfo = [
             'user_id' => $user->getId(),

@@ -4,6 +4,7 @@ require_once __DIR__ . '/../src/Order.php';
 require_once __DIR__ . '/../src/Product.php';
 require_once __DIR__ . '/../src/Carrier.php';
 require_once __DIR__ . '/../src/CarriersGateway.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 
 class OrderWithProductsTest extends PHPUnit_Framework_TestCase
 {
@@ -37,7 +38,10 @@ class OrderWithProductsTest extends PHPUnit_Framework_TestCase
             'coderslab'
         );
         
-        $this->basket = new Order(new CarriersGateway($this->connection));
+        $this->basket = new Order(
+            new CarriersGateway($this->connection),
+            new CatalogProductsGateway($this->connection)
+        );
 
         $this->productPrice = 4.50;
         
@@ -105,6 +109,22 @@ class OrderWithProductsTest extends PHPUnit_Framework_TestCase
         $this->basket->addProducts($this->products[2], 1); //this object has the same id as products[1]
         $this->assertCount(1, $this->basket->getOrderProducts());
         $this->assertEquals(6, $this->basket->countProducts());
+    }
+    
+    public function testAddedOrderProductContainsCatalogProduct()
+    {
+        $newProduct = $this->products[0];
+        $this->basket->addProducts($newProduct, 1);
+        
+        $productToAddId = $this->products[0]->getId();
+        
+        $this->assertEquals(
+            $productToAddId,
+            $this->basket
+                ->getOrderProductById($productToAddId)
+                    ->getCatalogProduct()
+                        ->getId()
+        );
     }
     
     public function testRemovingPossible()

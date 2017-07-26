@@ -45,25 +45,45 @@ class ShoppingManagerAndFactoryTest extends PHPUnit_Extensions_Database_TestCase
         $this->user->method('getBillingAddressId')->willReturn(1);
         $this->user->method('getShippingAddressId')->willReturn(2);
     }
-    
-    public function testLoadOrCreateBasketByUserWhenBasketExistsLoadsTheBasket()
+
+    public function testLoadOrCreateBasketWhenBasketExistsLoadsTheBasket()
     {
-        $existingBasketStatus = [
-            'id' => 1,
-            'order_id' => 1
+        //only the last basket status is a real basket as it is the last status for this order
+        //notice that the basket status is not the last recorded status for this user
+        $userOneBaskets = [
+            [
+                'id' => 1,
+                'order_id' => 1
+            ],
+            [
+                'id' => 4,
+                'order_id' => 2
+            ],
+            [
+                'id' => 6,
+                'order_id' => 3
+            ]
         ];
         
         $basket = $this->manager->loadOrCreateBasketByUser($this->user);
+        
+        $rowCountBefore = $this->getConnection()->getRowCount('order_statuses');
+        $this->manager->save($basket);
+        $rowCountAfter = $this->getConnection()->getRowCount('order_statuses');
+        $rowCountDifference = $rowCountBefore - $rowCountAfter;
+        $this->assertEquals(0, $rowCountDifference);
+        
         $this->assertInstanceOf(Order::class, $basket);
-        $this->assertEquals($existingBasketStatus['order_id'], $basket->getId());
+        $this->assertEquals($userOneBaskets[2]['order_id'], $basket->getId());
+        $this->assertEquals($userOneBaskets[2]['id'], $basket->getLastStatus()->getId());
     }
     
     public function testLoadOrCreateBasketByUserWhenBasketNotExistsCreatesBasket()
     {
-        $userWithoutBasketId = 4;
+        $idOfUserWithOldBasketStatusButNoActualBasket = 2; 
        
         $user = $this->createMock(User::class);
-        $user->method('getId')->willReturn($userWithoutBasketId);
+        $user->method('getId')->willReturn($idOfUserWithOldBasketStatusButNoActualBasket);
         $user->method('getBillingAddressId')->willReturn(1);
         $user->method('getShippingAddressId')->willReturn(2);
         

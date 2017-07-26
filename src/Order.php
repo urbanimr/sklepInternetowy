@@ -3,8 +3,9 @@ require_once __DIR__ . '/../src/OrderStatus.php';
 require_once __DIR__ . '/../src/OrderProduct.php';
 require_once __DIR__ . '/../src/Carrier.php';
 require_once __DIR__ . '/../src/Product.php';
+require_once __DIR__ . '/../src/CatalogProductsGateway.php';
 
-class Order implements TableRow
+class Order implements TableRow, JsonSerializable
 {
     //constant below are temporary and should be moved to class Payment
     const PAYMENT_CASH = 1;
@@ -25,9 +26,12 @@ class Order implements TableRow
     
     private $carriersGateway;
 
-    public function __construct(CarriersGateway $carriersGateway)
-    {
+    public function __construct(
+        CarriersGateway $carriersGateway,
+        CatalogProductsGateway $catalogProductsGateway
+    ) {
         $this->carriersGateway = $carriersGateway;
+        $this->catalogProductsGateway = $catalogProductsGateway;
         
         $this->id = -1;
         $this->userId = -1;
@@ -69,6 +73,13 @@ class Order implements TableRow
             'price' => $product->getPrice(),
         ];
         $newOrderProduct->importArray($data);
+        
+        $catalogProduct = $this->catalogProductsGateway
+            ->loadProductById(
+                $newOrderProduct->getProductId()
+        );
+        $newOrderProduct->setCatalogProduct($catalogProduct);
+        
         $this->products[] = $newOrderProduct;
     }
     
@@ -116,7 +127,7 @@ class Order implements TableRow
     {
         $total = 0;
         foreach ($this->getOrderProducts() as $product) {
-            $total .= $product->getQuantity() * $product->getPrice();
+            $total += $product->getQuantity() * $product->getPrice();
         }
         $total += $this->getShippingCost();
         $this->setTotalAmount($total);
@@ -144,6 +155,15 @@ class Order implements TableRow
             $total += $product->getQuantity();
         }
         return $total;
+    }
+    
+    public function jsonSerialize()
+    {
+        $array = $this->exportArray();
+        $array['id'] = $this->getId();
+        $array['products'] = $this->getOrderProducts();
+        $array['statuses'] = $this->getStatuses();
+        return $array;
     }
     
     /**

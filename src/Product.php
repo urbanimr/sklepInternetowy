@@ -6,7 +6,7 @@
  * Date: 02.07.2017
  * Time: 15:40
  */
-class Product
+class Product implements JsonSerializable
 {
     private $id;
     private $name;
@@ -125,6 +125,17 @@ class Product
         }catch (PDOException $exception){
             echo $exception->getMessage();
         }
+    }
+    
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'price' => $this->getPrice(),
+            'description' => $this->getDescription(),
+            'quantity' => $this->getQuantity()
+        ];
     }
 
     /**

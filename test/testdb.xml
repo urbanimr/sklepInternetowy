@@ -240,6 +240,13 @@
             <value>1</value>
             <value>11.40</value>
         </row>
+        <row>
+            <value>5</value>
+            <value>3</value>
+            <value>3</value>
+            <value>1</value>
+            <value>11.40</value>
+        </row>
     </table>
     <table name="order_statuses">
         <column>id</column>
@@ -272,15 +279,15 @@
         </row>
         <row>
             <value>5</value>
-            <value>3</value>
-            <value>1</value>
-            <value>2017-07-18 15:30:20</value>
+            <value>2</value>
+            <value>2</value>
+            <value>2017-07-19 15:30:20</value>
         </row>
         <row>
             <value>6</value>
             <value>3</value>
-            <value>2</value>
-            <value>2017-07-19 15:30:20</value>
+            <value>1</value>
+            <value>2017-07-20 15:30:20</value>
         </row>
         <row>
             <value>7</value>
@@ -293,6 +300,12 @@
             <value>4</value>
             <value>2</value>
             <value>2017-07-20 15:30:20</value>
+        </row>
+        <row>
+            <value>9</value>
+            <value>2</value>
+            <value>4</value>
+            <value>2017-07-21 15:30:20</value>
         </row>
     </table>
 </dataset>
