@@ -1,0 +1,43 @@
+<h1>Cart</h1>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Photo
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Unit price
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Total
+        </th>
+        <th>
+            Remove
+        </th>
+    </tr>
+    <tr ng-repeat="product in cart.products">
+        <td>
+            <img class="photo-cart" src="../img/powidlo.jpg">
+        </td>
+        <td ng-bind="product.catalogProduct.name"></td>
+        <td ng-bind="(product.price).toFixed(2)"></td>
+        <td>
+            <div class="form-group">
+                <input type="number" min="1" step="1" class="form-control" ng-model="product.quantity">
+            </div>
+        </td>
+        <td ng-bind="(product.price * product.quantity).toFixed(2)"></td>
+        <td>
+            <span class="glyphicon glyphicon-remove"></span>
+        </td>
+    </tr>
+</table>
+<div>
+    <span>Total products: </span>
+    <span ng-bind="(cart.total_amount - cart.shipping_cost).toFixed(2)"></span>
+</div>

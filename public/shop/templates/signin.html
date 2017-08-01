@@ -1,0 +1,21 @@
+<p>Logged: {{signInIsLogged}}</p>
+<p>Error: {{signInError}}</p>
+<h1>Sign in</h1>
+<form class="clearfix">
+    <div>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input id="email" type="text" class="form-control" name="email" placeholder="Email" ng-model="email">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input id="password" type="password" class="form-control" name="password" placeholder="Password" ng-model="password">
+        </div>
+    </div>
+    <input type="submit" value="Sign in" class="btn btn-default pull-right button-margin" ng-click="signIn()">
+</form>
+<div>
+    <hr>
+    <p>No account?</p>
+    <a href="#register">Register now</a>
+</div>

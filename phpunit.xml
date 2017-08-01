@@ -7,6 +7,19 @@
         <testsuite name="all">
             <directory>test</directory>
         </testsuite>
+        <testsuite name="user">
+            <file>test/UserWithoutDbTest.php</file>
+            <file>test/UserWithDbTest.php</file>
+        </testsuite>
+        <testsuite name="address">
+            <file>test/AddressWithoutDbTest.php</file>
+            <file>test/AddressWithDbTest.php</file>
+            <file>test/AddressDeleteTest.php</file>
+        </testsuite>
+        <testsuite name="product">
+            <file>test/ProductWithoutDbTest.php</file>
+            <file>test/ProductWithDbTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
       <whitelist processUncoveredFilesFromWhitelist="true">

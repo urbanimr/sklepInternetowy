@@ -1,0 +1,35 @@
+<div ng-show="isCategoryLoaded">
+    <h1>
+        {{category.name}}
+    </h1>
+    <div>
+        {{category.description}}
+    </div>
+    <div ng-repeat="product in category.products">
+        <hr>
+        <div class="row">
+            <div class="col-xs-4">
+                <a href="#product/{{product.id}}">
+                    <img class="photo-list" src="../img/powidlo.jpg">
+                </a>
+            </div>
+            <div class="col-xs-8">
+                <h3>
+                    <a href="#product/{{product.id}}">
+                        {{product.name}}
+                    </a>
+                </h3>
+                <div>
+                    {{product.description}}
+                </div>
+                <div>
+                    Price: {{product.price}} PLN
+                </div>
+                <button ng-show="user.isLogged" ng-click="addToCart(product.id)">Add to cart</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div ng-if="isCategoryLoaded === false">
+    {{error}}
+</div>

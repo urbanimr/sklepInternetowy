@@ -5,13 +5,6 @@ require_once __DIR__ . '/../src/InputValidator.php';
 
 class UserWithoutDbTest extends PHPUnit_Framework_TestCase
 {
-    private $mockAddress;
-    
-    protected function setUp()
-    {
-        $this->mockAddress = $this->createMock(Address::class);
-    }
-    
     public function testConstructSetsDefaultEmptyValues()
     {
         $timeBeforeCreation = time();
@@ -24,8 +17,10 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
         $this->assertInternalType('integer', $user->getDateCreated());
         $this->assertGreaterThanOrEqual($timeBeforeCreation, $user->getDateCreated());
         $this->assertLessThanOrEqual($timeAfterCreation, $user->getDateCreated());
-        $this->assertInternalType('array', $user->getAddresses());
-        $this->assertEmpty($user->getAddresses());
+        $this->assertEquals(-1, $user->getBillingAddressId());
+        $this->assertNull($user->getBillingAddress());
+        $this->assertEquals(-1, $user->getShippingAddressId());
+        $this->assertNull($user->getShippingAddress());
     }
     
     public function testSettersSetRightValues()
@@ -35,16 +30,28 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'name' => 'Jan Kowalski',
             'email' => 'jan@kowalski.pl',
             'dateCreated' => '2017-06-15 08:30:45',
+            'billing_address' => '1',
+            'billingAddress' => $this->createMock(Address::class),
+            'shipping_address' => '2',
+            'shippingAddress' => $this->createMock(Address::class),
         ];
         $user = new User();
         $user->setId($newValues['id']);
         $user->setName($newValues['name']);
         $user->setEmail($newValues['email']);
         $user->setDateCreated($newValues['dateCreated']);
+        $user->setBillingAddressId($newValues['billing_address']);
+        $user->setBillingAddress($newValues['billingAddress']);
+        $user->setShippingAddressId($newValues['shipping_address']);
+        $user->setShippingAddress($newValues['shippingAddress']);
         $this->assertEquals($newValues['id'], $user->getId());
         $this->assertEquals($newValues['name'], $user->getName());
         $this->assertEquals($newValues['email'], $user->getEmail());
         $this->assertEquals($newValues['dateCreated'], $user->getDateCreated());
+        $this->assertEquals($newValues['billing_address'], $user->getBillingAddressId());
+        $this->assertSame($newValues['billingAddress'], $user->getBillingAddress());
+        $this->assertEquals($newValues['shipping_address'], $user->getShippingAddressId());
+        $this->assertSame($newValues['shippingAddress'], $user->getShippingAddress());
     }
     
     public function testSetPasswordAndAuthenticateHashPassword()
@@ -90,6 +97,8 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'email' => 'jan@kowalski.pl',
             'password_plaintext' => 'correctPASSWORD123',
             'date_created' => '2017-06-15 08:30:45',
+            'billing_address' => '1',
+            'shipping_address' => '2'
         ];
         $user1 = new User();
         $user1->exchangeArray($data1);
@@ -98,6 +107,8 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($data1['email'], $user1->getEmail());
         $this->assertEquals($data1['date_created'], $user1->getDateCreated());
         $this->assertTrue($user1->authenticate($data1['email'], $data1['password_plaintext']));
+        $this->assertEquals($data1['billing_address'], $user1->getBillingAddressId());
+        $this->assertEquals($data1['shipping_address'], $user1->getShippingAddressId());
         
         $data2 = [
             'id' => '2',
@@ -119,7 +130,9 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
             'name' => 'Jan Kowalski',
             'email' => 'jan@kowalski.pl',
             'password' => 'abcABC123',
-            'dateCreated' => '2017-06-15 08:30:45'
+            'dateCreated' => '2017-06-15 08:30:45',
+            'billing_address' => '1',
+            'shipping_address' => '2'
         ];
         $requiredFields = array_keys($data);
         
@@ -145,6 +158,4 @@ class UserWithoutDbTest extends PHPUnit_Framework_TestCase
         );
         $this->assertFalse($result2);
     }
-
-    
 }

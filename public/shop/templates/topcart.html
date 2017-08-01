@@ -1,0 +1,10 @@
+<a href="#cart">
+    <img class="img-responsive cart-img" src="img/cart.gif" alt="Cart">
+    <div class="cart-info">
+        <p ng-if="cart.products.length == 0">Cart is empty</p>
+        <p ng-if="cart.products.length > 0">
+            <span ng-bind="(cart.total_amount - cart.shipping_cost).toFixed(2)"></span>
+            <span> PLN</span>
+        </p>
+    </div>
+</a>

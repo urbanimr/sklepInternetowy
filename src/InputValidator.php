@@ -20,19 +20,15 @@ class InputValidator
         'longerThan',
         'isInt',
         'personNamePattern',
+        'emailPattern',
+        'passwordPattern',
         'whitelist'
     ];
     
-    /**
-     * @param array $input Values to be validated, e.g. ['name' => 'Sienkiewicz'] 
-     * @param array $validations Validations applied to values, e.g. ['name' => [[validation1, options][validation2, options]]
-     */
-    public function __construct(array $input, array $validations)
+    public function __construct()
     {
         $this->input = [];
-        $this->addInput($input);
         $this->validations = [];
-        $this->addValidations($validations);
     }
     
     /**
@@ -159,6 +155,32 @@ class InputValidator
     protected function personNamePattern($inputValue, array $validation)
     {
         return (preg_match('/^[-\' \p{L}]+$/u', $inputValue) == 1) ? true : false;
+    }
+    
+    /**
+     * @param mixed $inputValue
+     * @param array $validation  Form: [validationName, options]. Options: none
+     * @return boolean True if success
+     */
+    protected function emailPattern($inputValue, array $validation)
+    {
+//        $filteredInput = filter_var($inputValue, FILTER_VALIDATE_EMAIL);
+//        return boolval($filteredInput);
+        return true;
+    }
+    
+    /**
+     * @param mixed $inputValue
+     * @param array $validation  Form: [validationName, options]. Options: none
+     * @return boolean True if success
+     */
+    protected function passwordPattern($inputValue, array $validation)
+    {
+//        if (strlen($inputValue) < 3) {
+//            return false;
+//        }
+//        
+        return true;
     }
     
     /**

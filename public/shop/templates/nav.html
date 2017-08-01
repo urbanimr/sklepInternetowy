@@ -1,0 +1,19 @@
+<nav class="navbar navbar-default">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-home"></span> Home</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="#checkauth">Check auth</a></li>
+        <li ng-if="user.isLogged"><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <li ng-if="user.isLogged === false"><a href="#signin"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+        <li ng-if="user.isLogged === false"><a href="#register">Register</a></li>
+        <li ng-if="user.isLogged"><a href="#signout"><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
+      </ul>
+    </div>
+</nav>

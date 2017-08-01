@@ -1,0 +1,14 @@
+<div ng-show="isProductLoaded">
+    <h1>{{product.name}}</h1>
+    <div>
+        <img class="photo-details" src="../img/powidlo.jpg">
+    </div>
+    <p>Price: {{product.price}} PLN</p>
+    <p>Quantity: {{product.quantity}}</p>
+    <p>Description: {{product.description}}</p>
+    <p>Id: {{product.id}}</p>
+    <button ng-show="user.isLogged" ng-click="addToCart(product.id)">Add to cart</button>
+</div>
+<div ng-if="isProductLoaded === false">
+    {{error}}
+</div>
