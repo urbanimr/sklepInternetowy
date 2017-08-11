@@ -9,11 +9,10 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li><a href="#checkauth">Check auth</a></li>
-        <li ng-if="user.isLogged"><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
-        <li ng-if="user.isLogged === false"><a href="#signin"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
-        <li ng-if="user.isLogged === false"><a href="#register">Register</a></li>
-        <li ng-if="user.isLogged"><a href="#signout"><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
+        <li ng-if="userIsLogged"><a href="#profile"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <li ng-if="userIsLogged === false"><a href="#signin"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+        <li ng-if="userIsLogged === false"><a href="#register">Register</a></li>
+        <li ng-if="userIsLogged"><a href="#signout"><span class="glyphicon glyphicon-log-out"></span> Sign out</a></li>
       </ul>
     </div>
 </nav>

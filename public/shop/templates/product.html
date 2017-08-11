@@ -7,7 +7,7 @@
     <p>Quantity: {{product.quantity}}</p>
     <p>Description: {{product.description}}</p>
     <p>Id: {{product.id}}</p>
-    <button ng-show="user.isLogged" ng-click="addToCart(product.id)">Add to cart</button>
+    <button ng-show="userIsLogged" ng-click="addToCart(product.id)">Add to cart</button>
 </div>
 <div ng-if="isProductLoaded === false">
     {{error}}

@@ -10,33 +10,34 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.js"></script>
-    <script src="js/StoreModule.js?ver=44"></script>
-    <script src="js/UserService.js?ver=43"></script>
-    <script src="js/CartService.js?ver=49"></script>
-    <script src="js/RootController.js?ver=48"></script>
-    <script src="js/TopCartController.js?ver=48"></script>
-    <script src="js/CategoriesController.js?ver=43"></script>
-    <script src="js/ProductController.js?ver=43"></script>
-    <script src="js/HomeController.js?ver=44"></script>
-    <script src="js/NavController.js?ver=43"></script>
-    <script src="js/SignInController.js?ver=43"></script>
-    <script src="js/SignOutController.js?ver=43"></script>
-    <script src="js/CheckAuthController.js?ver=43"></script>
-    <script src="js/ProfileController.js?ver=43"></script>
-    <script src="js/CategoryController.js?ver=43"></script>
-    <script src="js/CartPageController.js?ver=43"></script>
+    <script src="js/StoreModule.js?ver=95"></script>
+    <script src="js/UserService.js?ver=95"></script>
+    <script src="js/CartService.js?ver=95"></script>
+    <script src="js/RootController.js?ver=95"></script>
+    <script src="js/TopCartController.js?ver=95"></script>
+    <script src="js/CategoriesController.js?ver=95"></script>
+    <script src="js/ProductController.js?ver=95"></script>
+    <script src="js/HomeController.js?ver=95"></script>
+    <script src="js/NavController.js?ver=95"></script>
+    <script src="js/SignInController.js?ver=95"></script>
+    <script src="js/RegisterController.js?ver=95"></script>
+    <script src="js/SignOutController.js?ver=95"></script>
+    <script src="js/ProfileController.js?ver=95"></script>
+    <script src="js/CategoryController.js?ver=95"></script>
+    <script src="js/CartPageController.js?ver=95"></script>
+    <script src="js/SubmittedController.js?ver=95"></script>
 </head>
 <body>
 <div class="container-fluid" ng-app="StoreModule" ng-controller="RootController">
     <div class="row">
-        <div class="col-xs-6" ng-controller="NavController" ng-include="'templates/nav.html?ver=3'"></div>
+        <div class="col-xs-6" ng-controller="NavController" ng-include="'templates/nav.html?ver=95'"></div>
         <div class="col-xs-3">
             <img class="logo" src="../img/logo.jpg">
         </div>
-        <div class="col-xs-3 cart" ng-controller="TopCartController" ng-show="user.isLogged" ng-include="'templates/topcart.html?ver=45'"></div>
+        <div class="col-xs-3 cart" ng-controller="TopCartController" ng-show="userIsLogged" ng-include="'templates/topcart.html?ver=95'"></div>
     </div>
     <div class="row">
-        <div class="col-sm-3" ng-controller="CategoriesController" ng-include="'templates/categories.html?ver=40'"></div>
+        <div class="col-sm-3" ng-controller="CategoriesController" ng-include="'templates/categories.html?ver=95'"></div>
         <div class="col-sm-9" ng-view></div>
     </div>
 </div>

@@ -66,7 +66,7 @@ class SignInController extends PageController
         $_SESSION['userId'] = $user->getId();
         
         return [
-            'result' => json_encode(['code' => 1, 'error' => ''])
+            'result' => json_encode($user)
         ];
     }
     

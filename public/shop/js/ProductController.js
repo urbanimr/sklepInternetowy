@@ -1,10 +1,4 @@
-StoreModule.controller("ProductController", function($scope, $http, UserService, CartService, $routeParams) {
-    
-    $scope.$on('$routeChangeSuccess', function (e, current, previous) {
-        UserService.confirmBeingLogged();
-        $scope.user = UserService.user;
-    });
-    
+StoreModule.controller("ProductController", function($scope, $http, CartService, $routeParams) {
     var productId = $routeParams.id;
     
     $http.get("api/product.php?id=" + productId)

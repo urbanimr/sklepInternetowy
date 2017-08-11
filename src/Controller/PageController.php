@@ -5,9 +5,10 @@
 abstract class PageController
 {
     const SITE_NAME = 'Online store';
+    const STORE_EMAIL = 'notification@online-store.pl';
     /**
      * @var PDO connection to DB
-     */
+     */    
     protected $connection;
     /**
      * @var string Page to be displayed, e.g. 'delete.php' 

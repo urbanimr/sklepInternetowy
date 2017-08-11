@@ -1,0 +1,70 @@
+<h1>Register</h1>
+<form name="registerForm" ng-submit="register()">
+    <fieldset>
+        <legend>
+            User info
+        </legend>
+        <div class="form-group">
+            <label for="email">Email*: </label>
+            <input type="email" class="form-control" id="email" name="email" required ng-model="newUser.email">
+        </div>
+        <div class="form-group">
+            <label for="password_plaintext">Password*: </label>
+            <input type="password" class="form-control" id="password_plaintext" name="password_plaintext" required ng-model="newUser.password_plaintext">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>
+            Billing address
+        </legend>
+        <div class="form-group">
+            <label for="alias">Alias*: </label>
+            <input type="text" class="form-control" id="alias" name="alias" required ng-model="newBillingAddress.alias">
+        </div>
+        <div class="form-group">
+            <label for="company">Company: </label>
+            <input type="text" class="form-control" id="company" name="company" ng-model="newBillingAddress.company">
+        </div>
+        <div class="form-group">
+            <label for="name">Name*: </label>
+            <input type="text" class="form-control" id="name" name="name" required ng-model="newBillingAddress.name">
+        </div>
+        <div class="form-group">
+            <label for="address1">Address1*: </label>
+            <input type="text" class="form-control" id="address1" name="address1" required ng-model="newBillingAddress.address1">
+        </div>
+        <div class="form-group">
+            <label for="address2">Address2: </label>
+            <input type="text" class="form-control" id="address2" name="address2" ng-model="newBillingAddress.address2">
+        </div>
+        <div class="form-group">
+            <label for="postcode">Postcode*: </label>
+            <input type="text" class="form-control" id="postcode" name="postcode" required ng-model="newBillingAddress.postcode">
+        </div>
+        <div class="form-group">
+            <label for="city">City*: </label>
+            <input type="text" class="form-control" id="city" name="city" required ng-model="newBillingAddress.city">
+        </div>
+        <div class="form-group">
+            <label for="country">Country*: </label>
+            <input type="text" class="form-control" id="country" name="country" required ng-model="newBillingAddress.country">
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone*: </label>
+            <input type="text" class="form-control" id="phone" name="phone" required ng-model="newBillingAddress.phone">
+        </div>
+        <div class="form-group">
+            <label for="tax_no">Tax number: </label>
+            <input type="text" class="form-control" id="tax_no" name="tax_no" ng-model="newBillingAddress.tax_no">
+        </div>
+    </fieldset>
+    <div class="checkbox">
+      <label><input type="checkbox" value="" id="shipping_address" name="shipping_address" disabled ng-model="shippingAddressDifferent">Shipping address different than billing address?</label>
+    </div>
+    <button type="submit" class="btn btn-default pull-right" >Register</button>
+</form>
+<div>
+    <hr>
+    <p>Already have an account?</p>
+    <a href="#signin">Sign in</a>
+</div>

@@ -1,10 +1,5 @@
-StoreModule.factory('CartService', function ($http, UserService) {
-    
-    var cart = {
-//        total_amount: 30.50,
-//        shipping_cost: 15.50,
-//        products: [1, 2, 3]
-    };
+StoreModule.factory('CartService', function ($http, $route, $location) {
+    var cart = {};
     
     var getCart = function(){
         return cart;
@@ -15,16 +10,28 @@ StoreModule.factory('CartService', function ($http, UserService) {
     var observerCallbacks = [];
 
     var registerObserverCallback = function(callback){
-        console.log('działa register callback');
         observerCallbacks.push(callback);
     };
 
     var notifyObservers = function(){
-        console.log('działa notifyObserver');
         angular.forEach(observerCallbacks, function(callback){
             callback();
         });
     };
+    
+    var loadCart = function() {
+        $http.get("api/load_cart.php")
+        .then(function(response) {
+            var success = typeof response.data.code == 'undefined';
+            cartError = success ? '' : response.data.error;
+            if (success) {
+                cart = response.data;
+                notifyObservers();
+            }
+        }, function(response) {
+            cartError = 'Ajax failed';
+        });
+    }
     
     var addToCart = function(productId) {
         var data = {
@@ -37,13 +44,10 @@ StoreModule.factory('CartService', function ($http, UserService) {
             data: data
         })
         .then(function(response) {
-            console.log(response.data);
             var success = typeof response.data.code == 'undefined';
-            console.log(success);
             cartError = success ? '' : response.data.error;
             if (success) {
                 cart = response.data;
-                console.log(cart);
                 notifyObservers();
             }
         }, function(response) {
@@ -51,49 +55,108 @@ StoreModule.factory('CartService', function ($http, UserService) {
         });
     };
     
+    var updateQty = function(product) {
+        var data = product;
+        
+        $http({
+            url: "api/update_qty.php",
+            method: 'POST',
+            data: data
+        })
+        .then(function(response) {
+            var isSuccess = typeof response.data.code === 'undefined';
+            cartError = isSuccess ? '' : response.data.error;
+            if (isSuccess) {
+                cart = response.data;
+                notifyObservers();
+            } else {
+                $route.reload();
+            }
+        }, function(response) {
+            cartError = 'Ajax failed';
+            $route.reload();
+        });
+    }
+    
+    var remove = function(product) {
+        product.quantity = 0;
+        var data = product;
+        
+        $http({
+            url: "api/update_qty.php",
+            method: 'POST',
+            data: data
+        })
+        .then(function(response) {
+            var isSuccess = typeof response.data.code === 'undefined';
+            cartError = isSuccess ? '' : response.data.error;
+            $route.reload();
+        }, function(response) {
+            cartError = 'Ajax failed';
+            $route.reload();
+        });
+    }
+    
+    var updateDetails = function(property) {
+        var data = {
+            property: property,
+            value: cart[property]
+        };
+        
+        $http({
+            url: "api/update_details.php",
+            method: 'POST',
+            data: data
+        })
+        .then(function(response) {
+            var isSuccess = typeof response.data.code === 'undefined';
+            cartError = isSuccess ? '' : response.data.error;
+            if (isSuccess) {
+                cart = response.data;
+                notifyObservers();
+            } else {
+                $route.reload();
+            }
+        }, function(response) {
+            cartError = 'Ajax failed';
+            $route.reload();
+        });
+    };
+    
+    var submitOrder = function(){
+        var data = {};
+        
+        $http({
+            url: "api/submit_order.php",
+            method: 'POST',
+            data: data
+        })
+        .then(function(response) {
+            var isSuccess = response.data.code === 1;
+            cartError = isSuccess ? '' : response.data.error;
+            if (isSuccess) {
+                cart = {};
+                notifyObservers();
+                $location.path('/submitted');
+            } else {
+                $route.reload();
+            }
+        }, function(response) {
+            cartError = 'Ajax failed';
+            $route.reload();
+        });
+    };
+    
     return {
         cart: cart,
         cartError: cartError,
+        loadCart: loadCart,
         addToCart: addToCart,
+        updateQty: updateQty,
+        remove: remove,
+        updateDetails: updateDetails,
         registerObserverCallback: registerObserverCallback,
-        getCart: getCart
+        getCart: getCart,
+        submitOrder: submitOrder
     };
-  
-//var user = {
-//    isLogged: false,
-//    userId: -1
-//};
-//
-//var signIn = function() {
-//    user.isLogged = true;
-//}
-//
-//var signOut = function() {
-//    user.isLogged = false;
-//    user.id = -1;
-//};
-//
-//var confirmBeingLogged = function() {
-//    console.log('uruchamia się confirmBeingLogged');
-//    $http.get("api/checkauth.php")
-//    .then(function(response) {
-//        var isLogged = response.data.code === 1;
-//        if (isLogged) {
-//            signIn();
-//            return true;
-//        } else {
-//            signOut();
-//            return false;
-//        }
-//    }, function(response) {
-//        return false;
-//    });
-//}
-//
-//return {
-//    user: user,
-//    signIn : signIn,
-//    signOut : signOut,
-//    confirmBeingLogged : confirmBeingLogged
-//  };
 });
