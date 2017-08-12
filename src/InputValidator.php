@@ -105,7 +105,6 @@ class InputValidator
         if (in_array($validationName,$this->availableValidations)) {
             return $this->$validationName($inputValue, $validation);
         }
-        var_dump($inputValue);
         return false;
     }
     

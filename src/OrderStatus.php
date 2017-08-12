@@ -45,6 +45,7 @@ class OrderStatus implements TableRow, JsonSerializable
     {
         $array = $this->exportArray();
         $array['id'] = $this->getId();
+        $array['status_name'] = $this->getStatusName();
         return $array;
     }
     
@@ -81,7 +82,6 @@ class OrderStatus implements TableRow, JsonSerializable
     {
         return [
             'status_id' => $this->getStatusId(),
-            'status_name' => $this->getStatusName(),
             'order_id' => $this->getOrderId(),
             'date' => $this->getDate()
         ];

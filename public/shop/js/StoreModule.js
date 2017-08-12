@@ -58,3 +58,7 @@ StoreModule.config(function($routeProvider) {
         access : "logged"
     });
 });
+
+StoreModule.config(['$httpProvider', function($httpProvider) {
+    $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+}]);

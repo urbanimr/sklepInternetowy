@@ -22,7 +22,7 @@ StoreModule.factory('CartService', function ($http, $route, $location) {
     var loadCart = function() {
         $http.get("api/load_cart.php")
         .then(function(response) {
-            var success = typeof response.data.code == 'undefined';
+            var success = typeof response.data.code === 'undefined';
             cartError = success ? '' : response.data.error;
             if (success) {
                 cart = response.data;
@@ -44,7 +44,7 @@ StoreModule.factory('CartService', function ($http, $route, $location) {
             data: data
         })
         .then(function(response) {
-            var success = typeof response.data.code == 'undefined';
+            var success = typeof response.data.code === 'undefined';
             cartError = success ? '' : response.data.error;
             if (success) {
                 cart = response.data;

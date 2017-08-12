@@ -56,7 +56,7 @@ StoreModule.factory('UserService', function ($http, CartService, $location) {
             data: data
         })
         .then(function(response) {
-            var isLogged = response.data.id !== 'undefined';
+            var isLogged = typeof response.data.id !== 'undefined';
             userError = isLogged ? '' : response.data.error;
             if (isLogged) {
                 user = response.data;
@@ -107,8 +107,8 @@ StoreModule.factory('UserService', function ($http, CartService, $location) {
     var loadAddresses = function() {
         $http.get("api/load_addresses.php")
         .then(function(response) {
-            var areAddressesLoaded = response.data.billingAddress !== 'undefined'
-                && response.data.shippingAddress !== 'undefined';
+            var areAddressesLoaded = typeof response.data.billingAddress !== 'undefined'
+                && typeof response.data.shippingAddress !== 'undefined';
             addressesError = areAddressesLoaded ? '' : response.data.error;
             if (areAddressesLoaded) {
                 addresses = response.data;

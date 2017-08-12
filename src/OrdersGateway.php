@@ -191,6 +191,7 @@ class OrdersGateway extends TableGateway
             
             $status->setOrderId($order->getId());
             $statusSavedSuccessfully = $this->orderStatusesGateway->save($status);
+            $statusSavedSuccessfully;
             //todo: error when saving status should break the loop, rollback every db action and return false
         }
     }

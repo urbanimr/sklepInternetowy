@@ -38,49 +38,6 @@ class OrderStatusesGateway extends TableGateway
         );
     }
     
-//    public function loadBasketStatusByUserId(int $userId)
-//    {
-//        $joinedTables = [
-//            'statuses' => [
-//                'joinColumns' => ['status_id', 'id'],
-//                'selectedColumns' => ['status_name']
-//            ],
-//            'orders' => [
-//                'joinColumns' => ['order_id', 'id'],
-//                'selectedColumns' => ['user_id']
-//            ]
-//        ];
-//        
-//        $args = [
-//            'whereColumn' => 'user_id',
-//            'whereValue' => $userId,
-//            'joinedTables' => $joinedTables,
-//            'limit' => 100,
-//            'offset' => 0,
-//            'orderBy' => 'status_id',
-//            'isOrderAsc' => true
-//        ];
-//        $allStatuses = $this->loadItemsByColumn(
-//            $args['whereColumn'],
-//            $args['whereValue'],
-//            $args['joinedTables'],
-//            $args['limit'],
-//            $args['offset'],
-//            $args['orderBy'],
-//            $args['isOrderAsc']
-//        );
-//        
-//        if (empty($allStatuses)) {
-//            return false;
-//        }
-//        
-//        if ($allStatuses[0]->getStatusId() != OrderStatus::STATUS_BASKET) {
-//            return false;
-//        }
-//        
-//        return $allStatuses[0];
-//    }
-    
     public function loadBasketStatusByUserId(int $userId)
     {
         $completeQuery = 'SELECT order_statuses.*, statuses.status_name FROM order_statuses'

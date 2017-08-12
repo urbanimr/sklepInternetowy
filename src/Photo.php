@@ -9,7 +9,7 @@
 class Photo
 {
     private $id;
-    private productId;
+    private $productId;
     private $pictureName;
     private $path;
     private $pictureDescription;

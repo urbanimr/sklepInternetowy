@@ -1,12 +1,10 @@
 <?php
-require_once __DIR__ . '/PageController.php';
+require_once __DIR__ . '/JsonPageController.php';
 require_once __DIR__ . '/../Product.php';
 require_once __DIR__ . '/../Category.php';
 
-class CategoryController extends PageController
+class CategoryController extends JsonPageController
 {
-    private $debug;
-    
     public function __construct()
     {
         parent::__construct();
@@ -16,18 +14,15 @@ class CategoryController extends PageController
      * custom action performed by individual controllers. It has to set the $this->page property and return values to be displayed in view
      * @return array Array of data to be displayed in view, 'e.g. ['title' => 'Godfather']
      */
-    protected function customAction()
+    protected function customJsonAction()
     {
-        $this->setPage('json.php');
-        
         $categoryId = isset($_GET['id']) ? $_GET['id'] : '';
         
         $isIdValid = is_numeric($categoryId)
             && intval($categoryId) == $categoryId
             && $categoryId > 0;
         if (false === $isIdValid) {
-            $this->debug = 'id invalid';
-            return $this->returnCategoryNotFoundError();
+            return $this->returnError('Id invalid');
         }
         
         //temporary measure before creating categories table in db
@@ -76,13 +71,6 @@ class CategoryController extends PageController
         
         return [
             'result' => json_encode($category)
-        ];
-    }
-    
-    private function returnCategoryNotFoundError()
-    {
-        return [
-            'result' => json_encode(['code' => 0, 'error' => 'Category not found'])
         ];
     }
 }

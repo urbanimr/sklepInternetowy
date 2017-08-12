@@ -5,3 +5,4 @@
 - api opiera się na prostym autorskim MVC
 - model zamówienia jest dość rozbudowany, m.in. przechowuje historię zmian statusu, listę produktów z historycznymi cenami
 - z braku czasu funkcjonalność kategorii produktu jest udawana
+- użytkownik, który ma trochę zamówień i może posłużyć do testów: john@doe.com, hasło: 'doe'
