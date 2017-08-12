@@ -30,9 +30,40 @@ class CategoryController extends PageController
             return $this->returnCategoryNotFoundError();
         }
         
+        //temporary measure before creating categories table in db
         $category = new Category();
-        $category->setName('Category 1');
-        $category->setDescription('This is a description of category 1');
+        $category->setId($categoryId);
+        switch ($categoryId) {
+            case 1:
+                $category->setName('Flour');
+                $category->setDescription('Various kinds of flour');
+                break;
+            case 2:
+                $category->setName('Pasta');
+                $category->setDescription('Various kinds of pasta');
+                break;
+            case 3:
+                $category->setName('Rice');
+                $category->setDescription('Various kinds of rice');
+                break;
+            case 4:
+                $category->setName('Oils');
+                $category->setDescription('Various kinds of oil');
+                break;
+            case 5:
+                $category->setName('Sweeteners');
+                $category->setDescription('Various kinds of sweeteners');
+                break;
+            case 6:
+                $category->setName('Juices');
+                $category->setDescription('Various kinds of juices');
+                break;
+            case 7:
+                $category->setName('Vegetables');
+                $category->setDescription('Various kinds of vegetables');
+                break;
+        }
+
         $counter = 1;
         for ($i = 0; $i < 12;  $i++) {
             $product = Product::showProductById($this->connection, $counter);
@@ -42,12 +73,6 @@ class CategoryController extends PageController
             }
             $category->addProduct($product);
         }
-        
-//        $product = Product::showProductById($this->getConnection(), $productId);
-//        if (false === $product instanceof Product) {
-//            $this->debug = 'product not loaded';
-//            return $this->returnCategoryNotFoundError();
-//        }
         
         return [
             'result' => json_encode($category)

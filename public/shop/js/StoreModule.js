@@ -23,8 +23,18 @@ StoreModule.config(function($routeProvider) {
         access : "logged"
     })
     .when("/profile", {
-        templateUrl : "templates/profile.html?ver=95",
+        templateUrl : "templates/profile.html?ver=96",
         controller : "ProfileController",
+        access : "logged"
+    })
+    .when("/history", {
+        templateUrl : "templates/history.html?ver=95",
+        controller : "HistoryController",
+        access : "logged"
+    })
+    .when("/order/:id", {
+        templateUrl : "templates/order.html?ver=96",
+        controller : "OrderController",
         access : "logged"
     })
     .when("/signin", {

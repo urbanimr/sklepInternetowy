@@ -6,8 +6,8 @@
     <php>
         <var name="DB_DSN" value="mysql:host=localhost;dbname=store;charset=UTF8" />
         <var name="DB_HOST" value="localhost" />
-        <var name="DB_USER" value="root" />
-        <var name="DB_PASSWD" value="coderslab" />
+        <var name="DB_USER" value="" />
+        <var name="DB_PASSWD" value="" />
         <var name="DB_DBNAME" value="store" />
     </php>
     <testsuites>

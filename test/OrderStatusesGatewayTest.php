@@ -13,11 +13,11 @@ class OrderStatusesGatewayTest extends PHPUnit_Extensions_Database_TestCase
     protected function getConnection()
     {
         $conn = new PDO(
-            'mysql:host=localhost;dbname=store;charset=UTF8',
-            'root',
-            'coderslab'
+            $GLOBALS['DB_DSN'],
+            $GLOBALS['DB_USER'],
+            $GLOBALS['DB_PASSWD']
         );
-        return $this->createDefaultDBConnection($conn, 'store');
+        return $this->createDefaultDBConnection($conn, $GLOBALS['DB_DBNAME']);
     }
 
     protected function getDataSet()
@@ -30,9 +30,9 @@ class OrderStatusesGatewayTest extends PHPUnit_Extensions_Database_TestCase
     {
         parent::setUp();
         $this->connection = new PDO(
-            'mysql:host=localhost;dbname=store;charset=UTF8',
-            'root',
-            'coderslab'
+            $GLOBALS['DB_DSN'],
+            $GLOBALS['DB_USER'],
+            $GLOBALS['DB_PASSWD']
         );
         
         $this->gateway = new OrderStatusesGateway($this->connection);

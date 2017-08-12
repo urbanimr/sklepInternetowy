@@ -1,0 +1,23 @@
+<h1>Order history</h1>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Total
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Details
+        </th>
+    </tr>
+    <tr ng-repeat="order in orders">
+        <td ng-bind="getDateSubmitted(order)"></td>
+        <td ng-bind="(order.total_amount).toFixed(2)"></td>
+        <td ng-bind="getLastStatusName(order)"></td>
+        <td><a href="{{'#order/' + order.id}}">details</a></td>
+    </tr>
+</table>

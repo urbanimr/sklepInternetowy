@@ -1,0 +1,58 @@
+<h1>Order details</h1>
+<h3>Summary</h3>
+<div>
+    <span>Total products: </span>
+    <span ng-bind="(order.total_amount - order.shipping_cost).toFixed(2)"></span>
+</div>
+<div>
+    <span>Shipping cost: </span>
+    <span ng-bind="(order.shipping_cost).toFixed(2)"></span>
+</div>
+<div>
+    <span>Total cost: </span>
+    <span ng-bind="(order.total_amount).toFixed(2)"></span>
+</div>
+<h3>History</h3>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Status
+        </th>
+    </tr>
+    <tr ng-repeat="status in order.statuses">
+        <td ng-bind="status.date"></td>
+        <td ng-bind="status.status_name"></td>
+    </tr>
+</table>
+<h3>Products</h3>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Photo
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Unit price
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th>
+            Total
+        </th>
+    </tr>
+    <tr ng-repeat="product in order.products">
+        <td>
+            <img class="photo-cart" src="../img/powidlo.jpg">
+        </td>
+        <td ng-bind="product.catalogProduct.name"></td>
+        <td ng-bind="(product.price).toFixed(2)"></td>
+        <td ng-bind="product.quantity"></td>
+        <td ng-bind="(product.price * product.quantity).toFixed(2)"></td>
+    </tr>
+</table>

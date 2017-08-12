@@ -1,0 +1,7 @@
+<?php
+$connectionArray = [
+    'host' => 'localhost',
+    'user' => '',
+    'pass' => '',
+    'db' => 'store'
+];
