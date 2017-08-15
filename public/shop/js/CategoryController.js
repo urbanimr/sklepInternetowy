@@ -1,15 +1,8 @@
-StoreModule.controller("CategoryController", function($scope, $http, CartService, UserService, $routeParams) {
-    
-    $scope.$on('$routeChangeSuccess', function (e, current, previous) {
-        UserService.confirmBeingLogged();
-        $scope.user = UserService.user;
-    });
-    
+StoreModule.controller("CategoryController", function($scope, $http, CartService, $routeParams) {
     var categoryId = $routeParams.id;
     
     $http.get("api/category.php?id=" + categoryId)
     .then(function(response) {
-        console.log(response.data);
         var isCategoryLoaded = typeof response.data.code === 'undefined';
         $scope.isCategoryLoaded = isCategoryLoaded;
         $scope.error = isCategoryLoaded ? '' : response.data.error;

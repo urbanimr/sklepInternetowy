@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../src/TableRow.php';
 
-class Carrier implements TableRow
+class Carrier implements TableRow, JsonSerializable
 {
     const CARRIER_PICKUP = 1;
     const CARRIER_DHL = 2;
@@ -21,6 +21,13 @@ class Carrier implements TableRow
     public function calculateShippingCost(Order $basket)
     {
         return $this->price;
+    }
+    
+    public function jsonSerialize()
+    {
+        $array = $this->exportArray();
+        $array['id'] = $this->getId();
+        return $array;
     }
     
     public function importArray(array $data)

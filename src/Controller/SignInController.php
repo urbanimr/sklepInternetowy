@@ -1,12 +1,10 @@
 <?php
-require_once __DIR__ . '/PageController.php';
+require_once __DIR__ . '/JsonPageController.php';
 require_once __DIR__ . '/../User.php';
 require_once __DIR__ . '/../InputValidator.php';
 
-class SignInController extends PageController
+class SignInController extends JsonPageController
 {
-    private $debug;
-    
     public function __construct()
     {
         parent::__construct();
@@ -16,15 +14,8 @@ class SignInController extends PageController
      * custom action performed by individual controllers. It has to set the $this->page property and return values to be displayed in view
      * @return array Array of data to be displayed in view, 'e.g. ['title' => 'Godfather']
      */
-    protected function customAction()
+    protected function customJsonAction()
     {
-//        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-//            http_response_code(404);
-//            die();
-//        }
-        
-        $this->setPage('json.php');
-
         $postString = file_get_contents("php://input");
         $postArray = json_decode($postString, true); //null if not valid json
         if (!isset($postArray)) {
@@ -42,7 +33,7 @@ class SignInController extends PageController
             $requiredFields
         );
         if (false === $isInputValid) {
-            return $this->returnError('Invalid input');
+            return $this->returnError('Invalid email or password');
         }
         
         $user = User::loadUserByColumn(
@@ -66,14 +57,7 @@ class SignInController extends PageController
         $_SESSION['userId'] = $user->getId();
         
         return [
-            'result' => json_encode(['code' => 1, 'error' => ''])
-        ];
-    }
-    
-    private function returnError($error)
-    {
-        return [
-            'result' => json_encode(['code' => 0, 'error' => $error])
+            'result' => json_encode($user)
         ];
     }
 }

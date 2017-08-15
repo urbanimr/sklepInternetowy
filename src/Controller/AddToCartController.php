@@ -1,14 +1,12 @@
 <?php
-require_once __DIR__ . '/PageController.php';
+require_once __DIR__ . '/JsonPageController.php';
 require_once __DIR__ . '/../User.php';
 require_once __DIR__ . '/../InputValidator.php';
 require_once __DIR__ . '/../Product.php';
 require_once __DIR__ . '/../ShoppingManagerFactory.php';
 
-class AddToCartController extends PageController
+class AddToCartController extends JsonPageController
 {
-    private $debug;
-    
     public function __construct()
     {
         parent::__construct();
@@ -18,15 +16,8 @@ class AddToCartController extends PageController
      * custom action performed by individual controllers. It has to set the $this->page property and return values to be displayed in view
      * @return array Array of data to be displayed in view, 'e.g. ['title' => 'Godfather']
      */
-    protected function customAction()
+    protected function customJsonAction()
     {
-//        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-//            http_response_code(404);
-//            die();
-//        }
-        
-        $this->setPage('json.php');
-        
         session_start();
         if (!isset($_SESSION['userId'])) {
             return $this->returnError('Sign in to start shopping');
@@ -71,13 +62,6 @@ class AddToCartController extends PageController
         
         return [
             'result' => json_encode($basket)
-        ];
-    }
-    
-    private function returnError($error)
-    {
-        return [
-            'result' => json_encode(['code' => 0, 'error' => $error])
         ];
     }
 }

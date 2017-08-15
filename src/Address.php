@@ -1,6 +1,6 @@
 <?php
 
-class Address
+class Address implements JsonSerializable
 {
     private $id;
     private $alias;
@@ -139,6 +139,13 @@ class Address
         return $result;
     }
     
+    public function jsonSerialize()
+    {
+        $array = $this->getReverseExchangeArray();
+        $array['id'] = $this->getId();
+        return $array;
+    }
+    
     private function getReverseExchangeArray()
     {
         return [
@@ -204,7 +211,7 @@ class Address
 
         if (isset($data['alias'])) {
             $validator->addValidations([
-                'company' => [
+                'alias' => [
                     ['notEmpty'],
                     ['shorterThan', 80]
                 ]

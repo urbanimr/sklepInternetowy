@@ -28,12 +28,12 @@
         <td ng-bind="(product.price).toFixed(2)"></td>
         <td>
             <div class="form-group">
-                <input type="number" min="1" step="1" class="form-control" ng-model="product.quantity">
+                <input type="number" min="1" step="1" class="form-control" ng-model="product.quantity" ng-change="updateQty(product)">
             </div>
         </td>
         <td ng-bind="(product.price * product.quantity).toFixed(2)"></td>
         <td>
-            <span class="glyphicon glyphicon-remove"></span>
+            <span class="glyphicon glyphicon-remove" ng-click="remove(product)"></span>
         </td>
     </tr>
 </table>
@@ -41,3 +41,83 @@
     <span>Total products: </span>
     <span ng-bind="(cart.total_amount - cart.shipping_cost).toFixed(2)"></span>
 </div>
+<div>
+    <span>Shipping cost: </span>
+    <span ng-bind="(cart.shipping_cost).toFixed(2)"></span>
+</div>
+<div>
+    <span>Total cost: </span>
+    <span ng-bind="(cart.total_amount).toFixed(2)"></span>
+</div>
+<h3>Addresses</h3>
+<div class="row">
+    <div class="col-xs-6" ng-repeat="(title, data) in addresses">
+        <h4 ng-if="title==='billingAddress'">Billing Address</h4>
+        <h4 ng-if="title==='shippingAddress'">Shipping Address</h4>
+        <ul class="list-unstyled">
+            <li ng-bind="data.name"></li>
+            <li ng-bind="data.company"></li>
+            <li ng-bind="data.address1"></li>
+            <li ng-bind="data.address2"></li>
+            <li ng-bind="data.postcode"></li>
+            <li ng-bind="data.city"></li>
+            <li ng-bind="data.country"></li>
+            <li ng-bind="data.phone"></li>
+            <li ng-bind="data.tax_no"></li>
+        </ul>
+    </div>
+</div>
+<button class="btn btn-default pull-right" disabled>Change default addresses</button>
+<h3>Shipping method</h3>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            Select
+        </th>
+    </tr>
+    <tr ng-repeat="carrier in carriers">
+        <td>{{carrier.carrier_name}}</td>
+        <td>{{carrier.description}}</td>
+        <td>{{(carrier.price).toFixed(2)}}</td>
+        <td>
+            <input type="radio" name="carrier" value="{{carrier.id}}" ng-model="cart.carrier_id" ng-change="updateDetails('carrier_id')">
+        </td>
+    </tr>
+</table>
+<h3>Payment method</h3>
+<table class="table table-striped">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Select
+        </th>
+    </tr>
+    <tr ng-repeat="payment in payments">
+        <td>{{payment.payment_name}}</td>
+        <td>{{payment.description}}</td>
+        <td>
+            <input type="radio" name="payment" value="{{payment.id}}" ng-model="cart.payment_id" ng-change="updateDetails('payment_id')">
+        </td>
+    </tr>
+</table>
+<form name="orderForm" ng-submit="submit()">
+    <h3>Comment</h3>
+    <div class="form-group">
+        <textarea class="form-control" rows="5" id="comment" ng-model="cart.comment" ng-blur="updateDetails('comment')"></textarea>
+    </div>
+    <button type="submit" class="btn btn-default pull-right" ng-click="submitOrder()">Submit order</button>
+</form>

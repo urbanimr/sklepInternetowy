@@ -1,6 +1,6 @@
 <?php
 
-class User
+class User implements JsonSerializable
 {
     private $id;
     private $name;
@@ -152,6 +152,14 @@ class User
         $result = $stmt->execute($reverseExchangeArray);
         
         return $result;
+    }
+    
+    public function jsonSerialize()
+    {
+        $array = $this->getReverseExchangeArray();
+        $array['id'] = $this->getId();
+        unset($array['password']);
+        return $array;
     }
     
     private function getReverseExchangeArray()

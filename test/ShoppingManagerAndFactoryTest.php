@@ -14,11 +14,11 @@ class ShoppingManagerAndFactoryTest extends PHPUnit_Extensions_Database_TestCase
     protected function getConnection()
     {
         $conn = new PDO(
-            'mysql:host=localhost;dbname=store;charset=UTF8',
-            'root',
-            'coderslab'
+            $GLOBALS['DB_DSN'],
+            $GLOBALS['DB_USER'],
+            $GLOBALS['DB_PASSWD']
         );
-        return $this->createDefaultDBConnection($conn, 'store');
+        return $this->createDefaultDBConnection($conn, $GLOBALS['DB_DBNAME']);
     }
 
     protected function getDataSet()
@@ -31,9 +31,9 @@ class ShoppingManagerAndFactoryTest extends PHPUnit_Extensions_Database_TestCase
     {
         parent::setUp();
         $this->connection = new PDO(
-            'mysql:host=localhost;dbname=store;charset=UTF8',
-            'root',
-            'coderslab'
+            $GLOBALS['DB_DSN'],
+            $GLOBALS['DB_USER'],
+            $GLOBALS['DB_PASSWD']
         );
         
         $this->manager = ShoppingManagerFactory::create(
@@ -80,7 +80,7 @@ class ShoppingManagerAndFactoryTest extends PHPUnit_Extensions_Database_TestCase
     
     public function testLoadOrCreateBasketByUserWhenBasketNotExistsCreatesBasket()
     {
-        $idOfUserWithOldBasketStatusButNoActualBasket = 2; 
+        $idOfUserWithOldBasketStatusButNoActualBasket = 2;
        
         $user = $this->createMock(User::class);
         $user->method('getId')->willReturn($idOfUserWithOldBasketStatusButNoActualBasket);
@@ -105,5 +105,41 @@ class ShoppingManagerAndFactoryTest extends PHPUnit_Extensions_Database_TestCase
         
         $products = $basket->getOrderProducts();
         $this->assertCount(0, $products);
+    }
+    
+    public function testSaveSavesNewBasketWithStatusesAndProducts()
+    {
+        $idOfUserWithNoBasket = 3;
+        $user = User::loadUserByColumn($this->connection, 'id', $idOfUserWithNoBasket);
+        $basket = $this->manager->loadOrCreateBasketByUser($user);
+        $this->assertInstanceOf(Order::class, $basket);
+        $this->assertEquals(
+            $user->getId(),
+            $basket->getUserId()
+        );
+        $this->assertEquals(-1, $basket->getId());
+
+        $statuses = $basket->getStatuses();
+        $this->assertCount(1, $statuses);
+        $status = $statuses[0];
+        $this->assertInstanceOf(OrderStatus::class, $status);
+        $this->assertEquals(-1, $status->getId());
+        $this->assertEquals(OrderStatus::STATUS_BASKET, $status->getStatusId());
+        
+        $products = $basket->getOrderProducts();
+        $this->assertCount(0, $products);
+        
+        $ordersRowCountBefore = $this->getConnection()->getRowCount('orders');
+        $statusesRowCountBefore = $this->getConnection()->getRowCount('order_statuses');
+        
+        $this->manager->save($basket);
+        
+        $ordersRowCountAfter = $this->getConnection()->getRowCount('orders');
+        $ordersRowCountDifference = $ordersRowCountAfter - $ordersRowCountBefore;
+        $this->assertEquals(1, $ordersRowCountDifference);
+        
+        $statusesRowCountAfter = $this->getConnection()->getRowCount('order_statuses');
+        $statusesRowCountDifference = $statusesRowCountAfter - $statusesRowCountBefore;
+        $this->assertEquals(1, $statusesRowCountDifference);
     }
 }

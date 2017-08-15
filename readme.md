@@ -1,1 +1,8 @@
-Tworzymy sklep internetowy.
+- zrzut bazy danych znajduje się w pliku /store.sql. Nazwa bazy to 'store'.
+- dane do bazy należy wypełnić w pliku config/dataConnection.php.dist i /phpunit.xml.dist. Następnie z obu nazw plików należy usunąć ".dist".
+- właściwy sklep znajduje się pod adresem: public/shop/index.html
+- sklep to single-page application na bazie angulara. Aplikacja łączy się ajaxem z api
+- api opiera się na prostym autorskim MVC
+- model zamówienia jest dość rozbudowany, m.in. przechowuje historię zmian statusu, listę produktów z historycznymi cenami
+- z braku czasu funkcjonalność kategorii produktu jest udawana
+- użytkownik, który ma trochę zamówień i może posłużyć do testów: john@doe.com, hasło: 'doe'

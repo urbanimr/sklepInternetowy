@@ -1,11 +1,9 @@
 <?php
-require_once __DIR__ . '/PageController.php';
+require_once __DIR__ . '/JsonPageController.php';
 require_once __DIR__ . '/../Product.php';
 
-class ProductController extends PageController
+class ProductController extends JsonPageController
 {
-    private $debug;
-    
     public function __construct()
     {
         parent::__construct();
@@ -15,24 +13,20 @@ class ProductController extends PageController
      * custom action performed by individual controllers. It has to set the $this->page property and return values to be displayed in view
      * @return array Array of data to be displayed in view, 'e.g. ['title' => 'Godfather']
      */
-    protected function customAction()
+    protected function customJsonAction()
     {
-        $this->setPage('json.php');
-        
         $productId = isset($_GET['id']) ? $_GET['id'] : '';
         
         $isIdValid = is_numeric($productId)
             && intval($productId) == $productId
             && $productId > 0;
         if (false === $isIdValid) {
-            $this->debug = 'id invalid';
-            return $this->returnProductNotFoundError();
+            return $this->returnError('Id invalid');
         }
         
         $product = Product::showProductById($this->getConnection(), $productId);
         if (false === $product instanceof Product) {
-            $this->debug = 'product not loaded';
-            return $this->returnProductNotFoundError();
+            return $this->returnError('Product not loaded');
         }
         
         switch($product->getId()) {
@@ -49,13 +43,6 @@ class ProductController extends PageController
         
         return [
             'result' => json_encode($product)
-        ];
-    }
-    
-    private function returnProductNotFoundError()
-    {
-        return [
-            'result' => json_encode(['code' => 0, 'error' => 'Product not found'])
         ];
     }
 }

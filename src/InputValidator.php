@@ -22,7 +22,8 @@ class InputValidator
         'personNamePattern',
         'emailPattern',
         'passwordPattern',
-        'whitelist'
+        'whitelist',
+        'shorterThan'
     ];
     
     public function __construct()
@@ -135,6 +136,16 @@ class InputValidator
     protected function greaterThan($inputValue, array $validation)
     {
         return $inputValue > $validation[1];
+    }
+    
+    /**
+     * @param mixed $inputValue
+     * @param array $validation  Form: [validationName, options]. Options: int maximum length
+     * @return boolean True if success
+     */
+    protected function shorterThan($inputValue, array $validation)
+    {
+        return mb_strlen($inputValue) < $validation[1];
     }
 
     /**
